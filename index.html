@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ethische Dilemmata im Unterricht – BNE &amp; IDG</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f7f7f6;
+    --bg3: #f0efed;
+    --border: #e3e2df;
+    --border2: #d1d0cc;
+    --text: #1a1a18;
+    --text2: #5c5b57;
+    --text3: #8a8a85;
+    --accent: #185FA5;
+    --accent-bg: #E6F1FB;
+    --radius: 10px;
+    --radius-sm: 7px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg2);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .header { margin-bottom: 2rem; }
+  .header h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .header p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+  .pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+  .pill-g { background: #E1F5EE; color: #0F6E56; }
+  .pill-b { background: #EAF3DE; color: #3B6D11; }
+
+  /* Form card */
+  .form-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .fg { display: flex; flex-direction: column; gap: 5px; }
+  .lbl { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; }
+  select, input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color .15s;
+  }
+  select:focus, input:focus { border-color: var(--accent); }
+  .custom-wrap { margin-bottom: 1rem; display: none; }
+  .niveau-row { display: flex; gap: 8px; margin-bottom: 1rem; }
+  .nb {
+    flex: 1; padding: 8px 4px; font-size: 13px; cursor: pointer;
+    border: 1px solid var(--border2); background: var(--bg);
+    color: var(--text); border-radius: var(--radius-sm); transition: all .15s;
+  }
+  .nb:hover { background: var(--bg2); }
+  .nb.on { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+  .gen-btn {
+    width: 100%; padding: 10px; font-size: 15px; font-weight: 600; cursor: pointer;
+    background: var(--text); color: #fff; border: none;
+    border-radius: var(--radius-sm); transition: opacity .15s;
+  }
+  .gen-btn:hover { opacity: .85; }
+  .err {
+    background: #FEF2F2; color: #991B1B;
+    border-radius: var(--radius-sm); padding: 8px 12px;
+    font-size: 13px; margin-top: .75rem; display: none;
+  }
+
+  /* Result cards */
+  .res { display: none; }
+  .card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: .75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  }
+  .sl { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
+  .dt { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .ds { font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 12px; }
+  .de {
+    background: var(--bg2); border-radius: var(--radius-sm);
+    padding: 10px 14px; font-size: 14px; font-style: italic;
+    color: var(--text); line-height: 1.6; margin-bottom: 14px;
+    border-left: 3px solid var(--border2);
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .bx { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+  .bök { background: #EAF3DE; color: #3B6D11; }
+  .bso { background: #E6F1FB; color: #185FA5; }
+  .böko { background: #FAEEDA; color: #854F0B; }
+  .bpo { background: #EEEDFE; color: #534AB7; }
+  .bku { background: #FBEAF0; color: #993556; }
+  .bidg { background: #E1F5EE; color: #0F6E56; }
+  .bw { background: var(--bg2); color: var(--text2); border: 1px solid var(--border); }
+
+  .sep { height: 1px; background: var(--border); margin: 1.25rem 0; }
+
+  /* Impulse */
+  .imp-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .imp-item:last-child { border-bottom: none; }
+  .inum {
+    font-size: 10px; font-weight: 700; background: var(--accent-bg); color: var(--accent);
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .itext { font-size: 14px; color: var(--text2); line-height: 1.65; }
+
+  /* Aktionen */
+  .ak-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ak { background: var(--bg2); border-radius: var(--radius-sm); padding: 11px 13px; }
+  .at { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .ad { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+  /* Reflexion */
+  .rf {
+    padding: 7px 0 7px 14px; border-left: 2px solid var(--border2);
+    font-size: 14px; color: var(--text2); line-height: 1.65; margin-bottom: 7px;
+  }
+
+  /* Navigation */
+  .nav { display: flex; gap: 8px; margin-top: 1rem; align-items: center; }
+  .nbtn {
+    flex: 1; padding: 9px; font-size: 13px; cursor: pointer;
+    background: transparent; color: var(--text2);
+    border: 1px solid var(--border2); border-radius: var(--radius-sm); transition: background .12s;
+  }
+  .nbtn:hover { background: var(--bg2); }
+  .ctext { font-size: 12px; color: var(--text3); white-space: nowrap; }
+  .adapt-note {
+    padding: 9px 13px; font-size: 13px; color: var(--text2);
+    border-left: 3px solid var(--border2); background: var(--bg2);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: .75rem;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+  .footer-sub {
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.6;
+  }
+  .footer-license {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text3);
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 520px) {
+    .row2 { grid-template-columns: 1fr; }
+    .ak-grid { grid-template-columns: 1fr; }
+    .niveau-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Ethische Dilemmata im Unterricht</h1>
+    <p>Impulse für Bildung für nachhaltige Entwicklung &amp; Inner Development Goals</p>
+    <div class="pills">
+      <span class="pill pill-g">BNE</span>
+      <span class="pill pill-b">IDGs</span>
+      <span class="pill pill-g">Wertereflexion</span>
+      <span class="pill pill-b">Eigenverantwortung</span>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="row2">
+      <div class="fg">
+        <label class="lbl">Unterrichtsfach</label>
+        <select id="fsel" onchange="onFC()">
+          <option value="">Bitte wählen …</option>
+          <option>Sachunterricht / HSU</option>
+          <option>Biologie</option>
+          <option>Chemie</option>
+          <option>Physik</option>
+          <option>Mathematik</option>
+          <option>Deutsch</option>
+          <option>Englisch / Fremdsprachen</option>
+          <option>Geschichte</option>
+          <option>Geographie / Erdkunde</option>
+          <option>Ethik</option>
+          <option>Religion / Werte und Normen</option>
+          <option>Sport / Bewegung</option>
+          <option>Kunst / Bildende Kunst</option>
+          <option>Musik</option>
+          <option>Informatik / Medienbildung</option>
+          <option>Wirtschaft / Politik (WiPo)</option>
+          <option>Hauswirtschaft / Ernährung</option>
+          <option>Sozialwissenschaften</option>
+          <option>Philosophie</option>
+          <option value="custom">Anderes Fach …</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="lbl">Klassenstufe</label>
+        <select id="ksel">
+          <option value="">Bitte wählen …</option>
+          <option>1-4</option>
+          <option>5-6</option>
+          <option>7-8</option>
+          <option>9-10</option>
+          <option>11-13</option>
+        </select>
+      </div>
+    </div>
+    <div class="custom-wrap" id="cw">
+      <label class="lbl">Eigenes Fach eingeben</label>
+      <input type="text" id="cfach" placeholder="z.B. DaZ, Projektunterricht, Philosophie …"/>
+    </div>
+    <label class="lbl">Niveau</label>
+    <div class="niveau-row">
+      <button class="nb" id="n0" onclick="setN(0)">Grundniveau</button>
+      <button class="nb" id="n1" onclick="setN(1)">Mittleres Niveau</button>
+      <button class="nb" id="n2" onclick="setN(2)">Hohes Niveau</button>
+    </div>
+    <button class="gen-btn" onclick="gen()">Impulse anzeigen ↗</button>
+    <div class="err" id="er">Bitte Fach, Klassenstufe und Niveau auswählen.</div>
+  </div>
+
+  <div class="res" id="res"></div>
+
+  <div class="footer">
+    <div class="footer-inner">
+      <div class="footer-title">BNE &amp; IDG Dilemma-Generator</div>
+      <div class="footer-sub">Erstellt von <strong>Sabine Barth, SkillUp</strong> mit Unterstützung von Claude.AI</div>
+      <div class="footer-license">CC BY-NC-ND &nbsp;·&nbsp; Namensnennung, nicht kommerziell, keine Bearbeitungen</div>
+      <div class="footer-sub">Frei verwendbar für schulische und nicht-kommerzielle Zwecke &nbsp;·&nbsp; Weitergabe nur unverändert und mit Namensnennung</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const NL = ['Grundniveau','Mittleres Niveau','Hohes Niveau'];
+let sN = -1, fil = [], idx = 0;
+
+const D = [
+{id:1,ti:"Wegwerfen oder weitergeben?",
+fa:["Sachunterricht / HSU","Ethik","Religion / Werte und Normen","Deutsch","Kunst / Bildende Kunst","Sport / Bewegung"],
+kl:["1-4","5-6"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Leon bekommt zu seinem Geburtstag ein neues Spielzeugauto. Das alte liegt in der Ecke – es ist noch ganz, aber er spielt kaum noch damit. Mama sagt: 'Wir räumen auf.' Was passiert mit dem alten Auto?",
+eq:"Wenn etwas noch funktioniert – darf man es einfach wegwerfen?",
+di:["Ökologie","Soziales","Ökonomie"],
+ig:["Being: Umgang mit Besitz","Relating: Teilen & Schenken","Acting: verantwortungsvolle Entscheidung"],
+we:["Wertschätzung","Teilen","Fürsorge","Nachhaltigkeit"],
+im:["Zeig ein altes, aber noch heiles Spielzeug – und schweig. Lass die Kinder schauen und nachdenken.",
+"Denke an ein Kind, dem dieses Spielzeug eine große Freude machen würde. Was braucht es – und wie könnte es dorthin kommen?",
+"Wenn Dinge noch gut funktionieren, aber niemand sie benutzt – was passiert dann mit ihnen?",
+"Was wäre, wenn alle Spielzeuge, die noch gut sind, ein zweites Zuhause fänden?",
+"Beobachte: Wer denkt ans Wegwerfen – wer ans Weitergeben? Woher kommt der Unterschied?"],
+ak:[{t:"Tausch-Kiste in der Klasse",b:"Jede:r bringt freiwillig etwas mit, das weiterleben soll – wer möchte, nimmt eins mit."},{t:"Reparier-Versuch",b:"Was ist kaputt, aber reparierbar? Schüler:innen probieren gemeinsam, etwas zu reparieren."},{t:"Kleiner Flohmarkt",b:"Die Klasse organisiert einen Tausch- oder Verkaufstisch – Erlös für ein selbst gewähltes Projekt."},{t:"Dinge-Steckbrief",b:"Jede:r beschreibt ein Lieblingsstück: Woher kommt es? Was kann es? Was wäre, wenn es verschwindet?"}],
+re:["Was besitze ich, das ich lange nicht benutzt habe – aber noch gern behalte? Warum?","Wer könnte sich über etwas freuen, das mir nichts mehr bedeutet?","Was bedeutet 'Wertschätzung' für Dinge – nicht nur für Menschen?","Wenn alle weniger wegwerfen würden – was würde sich in der Welt verändern?"]},
+
+{id:2,ti:"Schulweg: Zu Fuß, Rad oder Auto?",
+fa:["Sachunterricht / HSU","Sport / Bewegung","Ethik","Geographie / Erdkunde","Deutsch","Religion / Werte und Normen"],
+kl:["1-4","5-6"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Jeden Morgen fahren viele Kinder mit dem Auto zur Schule. Vor dem Schultor staut es sich. Andere laufen oder fahren Rad – manchmal im Regen. Das Auto stößt Abgase aus. Manchmal wohnt man aber auch weit weg oder der Weg ist nicht sicher.",
+eq:"Wie kommen wir zur Schule – und was hat das mit allen anderen zu tun?",
+di:["Ökologie","Soziales","Gesundheit"],
+ig:["Being: eigene Gewohnheiten wahrnehmen","Relating: Rücksicht im Straßenverkehr","Acting: kleine Entscheidungen, große Wirkung"],
+we:["Gesundheit","Umweltbewusstsein","Rücksichtnahme","Gemeinschaft"],
+im:["Stell dir den Schulweg am Morgen vor – was siehst, hörst und riechst du?",
+"Denke an Kinder, die gerne zu Fuß gehen würden, aber keinen sicheren Weg haben. Was bräuchten sie?",
+"Was passiert jeden Morgen vor dem Schultor – und wie fühlt es sich für alle an?",
+"Wenn alle Kinder laufen oder radeln würden – was würde sich vor der Schule verändern?",
+"Was macht den Schulweg zu einem schönen Teil des Tages?"],
+ak:[{t:"Schulweg-Karte zeichnen",b:"Schüler:innen zeichnen ihren Schulweg – was ist schön daran, was ist schwierig?"},{t:"Experiment: eine Woche laufen",b:"Wer möchte und kann, geht eine Woche zu Fuß – und erzählt, was er erlebt hat."},{t:"Schulhof-Idee entwickeln",b:"Was bräuchte die Schule, damit der Weg hierher sicherer und angenehmer wird?"},{t:"Brief an die Gemeinde",b:"Gibt es einen gefährlichen Übergang? Wer möchte, schreibt an die Gemeinde."}],
+re:["Was erlebe ich auf meinem Schulweg – und was würde ich verpassen, wenn jemand mich fährt?","Was bräuchte ich, um den Schulweg anders zurückzulegen?","Wie verändert sich der Schulhof, wenn viele Kinder mit dem Auto gebracht werden?","Was kann ich tun – auch wenn andere es anders machen?"]},
+
+{id:3,ti:"Pause ohne Plastik?",
+fa:["Sachunterricht / HSU","Hauswirtschaft / Ernährung","Ethik","Biologie","Religion / Werte und Normen","Deutsch"],
+kl:["1-4","5-6"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Manche Kinder haben ihr Pausenbrot in einer Plastiktüte, andere in einer Brotdose. Im Schulhof liegen manchmal Folien auf dem Boden. Was passiert mit all dem Plastik – und wo kommt es hin?",
+eq:"Was hat mein Pausenbrot mit dem Meer zu tun?",
+di:["Ökologie","Soziales","Gesundheit"],
+ig:["Being: alltägliche Entscheidungen bewusst wahrnehmen","Thinking: Zusammenhänge erkennen","Acting: kleine Schritte im Alltag"],
+we:["Umweltverantwortung","Fürsorge","Alltagsbewusstsein","Gemeinschaft"],
+im:["Leg eine Plastiktüte und eine Brotdose nebeneinander – und schweig. Was bemerken die Kinder?",
+"Denke an Meerestiere, die Plastik für Nahrung halten. Was brauchen sie von uns?",
+"Was würde auf dem Schulhof passieren, wenn jede:r eine Brotdose dabei hätte?",
+"Beobachte: Wer denkt sofort an Lösungen – wer hält inne und fragt zuerst warum?",
+"Was könnte die Klasse gemeinsam ausprobieren – ohne dass jemand etwas kaufen muss?"],
+ak:[{t:"Brotdosen-Woche",b:"Wer möchte, bringt eine Woche lang sein Pausenbrot verpackungsfrei – und erzählt, wie es war."},{t:"Schulhof-Zählung",b:"Wie viel Plastikmüll liegt auf dem Schulhof? Schüler:innen zählen und dokumentieren."},{t:"Klassenregel entwickeln",b:"Was könnten wir gemeinsam vereinbaren – ohne dass jemand ausgeschlossen wird?"},{t:"Brief an die Schulleitung",b:"Wer möchte, schlägt eine Idee vor, wie die Schule plastikärmer werden könnte."}],
+re:["Was steckt in meiner Pausentasche – und wo landet es am Ende?","Was könnte ich anders machen – und was brauche ich dafür?","Was kann eine Klasse gemeinsam verändern, was einer alleine nicht schafft?","Warum ist das Meer weit weg – und hat trotzdem mit mir zu tun?"]},
+
+{id:4,ti:"Gaming – wann ist Schluss?",
+fa:["Informatik / Medienbildung","Ethik","Deutsch","Sport / Bewegung","Sozialwissenschaften","Religion / Werte und Normen"],
+kl:["5-6","7-8"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Das neue Spiel ist spannend – eine Stunde wird schnell zu drei. Draußen wartet die Freundin. Die Hausaufgaben liegen auf dem Tisch. Und Konsolen brauchen Strom, der irgendwo produziert werden muss.",
+eq:"Wenn etwas Spaß macht – muss ich trotzdem aufhören?",
+di:["Soziales","Ökologie (Energieverbrauch)","Gesundheit"],
+ig:["Being: Selbstwahrnehmung & Selbstregulation","Relating: Freundschaft & Verantwortung","Acting: eigene Grenzen setzen"],
+we:["Selbstverantwortung","Freundschaft","Gesundheit","Achtsamkeit"],
+im:["Stell euch vor, eine Stunde Spielen verbraucht so viel Strom wie drei Stunden Fernsehen. Was verändert das?",
+"Denke an jemanden, der auf dich wartet – was bedeutet Warten für diese Person?",
+"Wann fühlt sich Spielen gut an – und wann nicht mehr? Lade ein, ohne dass jemand antworten muss.",
+"Was würde fehlen, wenn es gar keine Bildschirmzeit mehr gäbe – und was nicht?",
+"Beobachte: Wer denkt zuerst an sich – wer denkt an andere?"],
+ak:[{t:"Eigene Spielzeit-Regel",b:"Jede:r entwickelt für sich eine Regel, die sich gut anfühlt – keine Pflicht, eine Einladung."},{t:"Gaming-Energie sichtbar machen",b:"Wie viel Strom verbraucht eine Konsole pro Stunde? Schüler:innen recherchieren selbst."},{t:"Alternativen-Sammlung",b:"Was macht genauso viel Spaß wie Zocken – aber ohne Bildschirm? Eine gemeinsame Liste."},{t:"Experiment: bildschirmfreier Nachmittag",b:"Wer möchte, probiert es aus – und erzählt beim nächsten Treffen, wie es war."}],
+re:["Wann merke ich, dass ich genug gespielt habe?","Was könnte ich verpassen, wenn ich sehr lange spiele?","Was ist mir wichtiger – und handle ich danach?","Was wäre, wenn ich meiner Freundin oder meinem Freund genauso viel Zeit schenke wie dem Spiel?"]},
+
+{id:5,ti:"Neu oder gebraucht? Das Handy-Dilemma",
+fa:["Informatik / Medienbildung","Wirtschaft / Politik (WiPo)","Geographie / Erdkunde","Ethik","Sozialwissenschaften"],
+kl:["7-8","9-10"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Das alte Handy funktioniert noch – aber das neue Modell ist schneller und hat eine bessere Kamera. Ein generalüberholtes gebrauchtes kostet halb so viel und spart Rohstoffe. Doch: Was denken die anderen in der Klasse?",
+eq:"Brauche ich das Neueste – oder reicht das Gute?",
+di:["Ökologie","Ökonomie","Soziales (sozialer Druck)"],
+ig:["Being: Bedürfnisse vs. Wünsche","Thinking: Ressourcen & Lieferketten","Acting: bewusste Konsumentscheidung"],
+we:["Ressourcenbewusstsein","Unabhängigkeit","Zugehörigkeit","Sparsamkeit"],
+im:["Zeig zwei Handys – ein neues und ein generalüberholtes. Frag: Was seht ihr als erstes?",
+"Denke an die Rohstoffe, die in einem Handy stecken – Kobalt, Lithium, seltene Erden. Was bedeutet das für die Menschen, die sie abbauen?",
+"Beobachte: Wer denkt ans Neueste – wer ans Nachhaltigste? Was beeinflusst die Wahl?",
+"Wenn alle gebrauchte Geräte nutzen würden – was würde sich in der Produktion verändern?",
+"Was macht ein gutes Gerät aus – die Funktion oder das Gefühl, das es gibt?"],
+ak:[{t:"Handy-Lebensdauer verlängern",b:"Schüler:innen recherchieren: Was kann ich tun, damit mein Gerät länger hält?"},{t:"Refurbished vs. Neu vergleichen",b:"Preisvergleich, Qualitätsvergleich – jede:r wählt selbst ein Produkt zum Vergleichen."},{t:"Repair-Café besuchen",b:"Gibt es ein lokales Repair-Café? Wer möchte, bringt etwas Kaputtes hin."},{t:"An einen Hersteller schreiben",b:"Wer möchte, fragt nach Reparierbarkeit und Lieferketten eines konkreten Unternehmens."}],
+re:["Was brauche ich wirklich von einem Gerät – und was wäre nur schön?","Wann entscheide ich nach meinen eigenen Werten – wann nach dem, was andere denken?","Was steckt in meinem Gerät – und was weiß ich darüber?","Was würde nachhaltigeres Konsumieren für mich im Alltag bedeuten?"]},
+
+{id:6,ti:"Klassenreise: nah oder weit?",
+fa:["Geographie / Erdkunde","Ethik","Sozialwissenschaften","Deutsch","Sport / Bewegung","Englisch / Fremdsprachen","Sachunterricht / HSU"],
+kl:["5-6","7-8","9-10"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Die Klasse plant ihre Jahresreise. Eine Gruppe möchte nach London – aufregend, aber teuer und mit Fliegen. Eine andere schlägt eine Fahrradtour in der Region vor. Nicht alle finden alles gleich toll – und nicht alle haben dieselben Möglichkeiten.",
+eq:"Was macht eine gute Klassenreise aus – das Ziel oder das Miteinander?",
+di:["Ökologie","Ökonomie","Soziales (Zusammenhalt & Inklusion)"],
+ig:["Being: eigene Wünsche & Gemeinschaft abwägen","Relating: alle mitnehmen","Acting: gemeinsam fair entscheiden"],
+we:["Gemeinschaft","Klimabewusstsein","Inklusion","Kompromiss"],
+im:["Lass die Klasse selbst Ideen einbringen – ohne sofort zu gewichten oder zu bewerten.",
+"Halte inne: Es gibt Menschen, für die manche Reiseziele aus verschiedenen Gründen nicht erreichbar sind. Was braucht eine Reise, damit wirklich alle dabei sein können?",
+"Denke an das, was eine Klassenreise unvergesslich macht – ist es das Ziel oder das Miteinander?",
+"Beobachte: Wer denkt sofort an Spaß – wer denkt ans Gemeinsame – wer an die Umwelt?",
+"Was wäre, wenn alle gemeinsam ein Ziel entwickeln würden, das alle einschließt?"],
+ak:[{t:"Reiseideen sammeln",b:"Jede:r bringt eine Idee mit – alle werden ernst genommen, keine schnelle Abstimmung."},{t:"CO₂-Vergleich der Ideen",b:"Die Klasse berechnet gemeinsam den Unterschied – und entscheidet dann selbst."},{t:"Nahes Abenteuer planen",b:"Was wäre ein unvergessliches Erlebnis in der Region? Schüler:innen planen es selbst."},{t:"Entscheidungsregeln festlegen",b:"Wie treffen wir gemeinsam eine Entscheidung, die alle mittragen können?"}],
+re:["Was macht eine Reise unvergesslich – das Ziel oder was ich erlebe?","Wie entscheide ich in einer Gruppe fair, wenn alle unterschiedliche Wünsche haben?","Was bedeutet es, dass wirklich alle dabei sein können?","Was nehme ich mit – auch wenn es nicht mein erstes Wunschziel war?"]},
+
+{id:7,ti:"Unverpackt einkaufen – Luxus oder Lösung?",
+fa:["Hauswirtschaft / Ernährung","Biologie","Geographie / Erdkunde","Ethik","Wirtschaft / Politik (WiPo)","Religion / Werte und Normen","Philosophie","Sozialwissenschaften"],
+kl:["5-6","7-8","9-10"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Ein Unverpackt-Laden öffnet im Stadtzentrum. Die Produkte sind plastikfrei – aber deutlich teurer als im Discounter. Gleichzeitig stapelt sich im Discounter täglich Plastikmüll.",
+eq:"Wer sollte für Umweltschutz zahlen – wer es sich leisten kann, oder alle?",
+di:["Ökologie","Ökonomie","Soziales"],
+ig:["Being: Werte zu Konsum","Thinking: systemisches Denken","Relating: Perspektive anderer einnehmen"],
+we:["Umweltverantwortung","Soziale Gerechtigkeit","Konsumbewusstsein","Solidarität"],
+im:["Beobachte: Wer spricht über eigene Möglichkeiten – wer denkt an andere?",
+"Halte inne: Es gibt Menschen, die keine Wahl haben, wo sie einkaufen. Was könnten wir beitragen, damit diese Wahlmöglichkeiten entstehen?",
+"Lass den Widerspruch stehen: Manchmal ist das Richtige teurer – was sagt das über unser System?",
+"Denke an jemanden, der drei Jobs hat und drei Kinder – wie sieht Nachhaltigkeit aus dieser Perspektive aus?",
+"Lade zur Stille ein: Was würde ich wirklich tun – nicht was sollte ich tun?"],
+ak:[{t:"Preisvergleich selbst gemacht",b:"Schüler:innen vergleichen selbst, was verpackungsfreie Alternativen kosten – ein Produkt ihrer Wahl."},{t:"Ein-Wochen-Experiment",b:"Wer möchte, versucht eine Produktkategorie verpackungsfrei – und teilt die Erfahrung."},{t:"Perspektiven erforschen",b:"Was wäre, wenn Umweltprodukte für alle erschwinglich wären? Schüler:innen entwickeln eigene Ideen."},{t:"Brief an einen Supermarkt",b:"Wer überzeugt ist, fragt nach – als freie Entscheidung."}],
+re:["Was wäre für mich der erste kleine Schritt – und warum genau dieser?","Welche Werte stehen bei mir im Konflikt?","Wer profitiert von meinem Einkaufsverhalten – wer leidet?","Was müsste sich im System ändern, damit Umweltschutz für alle zugänglich wird?"]},
+
+{id:8,ti:"KI macht meine Hausaufgaben – und dann?",
+fa:["Informatik / Medienbildung","Deutsch","Ethik","Mathematik","Englisch / Fremdsprachen","Sozialwissenschaften","Philosophie","Geschichte","Biologie","Chemie","Physik"],
+kl:["7-8","9-10","11-13"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"ChatGPT schreibt in Sekunden einen Aufsatz, den ein Schüler in zwei Stunden schreiben würde. Wer KI nutzt, hat mehr Freizeit. Wer es nicht tut, lernt vielleicht mehr. Aber: Nicht alle haben Zugang zu den gleichen Tools.",
+eq:"Ist es unehrlich, KI zu benutzen – oder unklug, es nicht zu tun?",
+di:["Soziales (Bildungsgerechtigkeit)","Ökonomie (digitale Teilhabe)","Kultur (Lernen & Wissen)"],
+ig:["Being: Integrität & Selbstverantwortung","Thinking: kritisches Hinterfragen","Acting: bewusstes Entscheiden"],
+we:["Ehrlichkeit","Bildungsgerechtigkeit","Eigenverantwortung","Neugier","Fairness"],
+im:["Schweig eine Minute nach der Frage – lass Raum entstehen, ohne dass jemand antworten muss.",
+"Lade ein ohne Erwartung: Wer möchte, teilt eine Erfahrung. Wer lieber zuhört, tut das – beides ist wertvoll.",
+"Denke an Schüler:innen in anderen Teilen der Welt ohne Internetzugang – wie verändert das die Frage?",
+"Wann hast du zuletzt etwas gelernt, das dir schwerfiel – und was hast du davon mitgenommen?",
+"Beobachte: Wer denkt an Fairness für andere – wer denkt zuerst an sich?"],
+ak:[{t:"Eigene KI-Regeln entwickeln",b:"Kleine Gruppen erarbeiten Regeln für sich – nicht als Vorschrift für andere."},{t:"Selbstexperiment – wer möchte",b:"Zwei Wochen notieren: wann KI, wann nicht – wie fühlt sich beides an?"},{t:"Klassenvereinbarung",b:"Gemeinsame Haltung erarbeiten – aber nur, wenn wirklich alle zustimmen können."},{t:"Brief an mein zukünftiges Ich",b:"Was will ich in 10 Jahren über mein Lernen sagen? Niemand muss vorlesen."}],
+re:["Was lerne ich wirklich, wenn KI die Arbeit macht?","Wann ist Hilfe holen Stärke – und wann macht es mich langfristig schwächer?","Was wäre fair – für alle Schüler:innen, nicht nur für mich?","Was ist mir beim Lernen wirklich wichtig – und handle ich danach?"]},
+
+{id:9,ti:"Das perfekte T-Shirt für 5 Euro",
+fa:["Wirtschaft / Politik (WiPo)","Geographie / Erdkunde","Sozialwissenschaften","Ethik","Deutsch","Philosophie","Religion / Werte und Normen","Geschichte"],
+kl:["7-8","9-10","11-13"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"In Bangladesh näht Farida (23) 12 Stunden täglich für einen Hungerlohn. Das T-Shirt kostet 4,99 € im Regal – und ist nach drei Wäschen verblasst. Was steckt hinter diesem Preis?",
+eq:"Ist es möglich, fair zu leben, wenn das System unfair gebaut ist?",
+di:["Soziales","Ökonomie","Ökologie"],
+ig:["Relating: globale Empathie","Thinking: systemisches Denken","Acting: Konsumentscheidungen"],
+we:["Menschenwürde","Solidarität","Fairness","Konsumkritik","Globale Verantwortung"],
+im:["Zeig das Etikett eines T-Shirts und schweig. Warte, was passiert.",
+"Was wäre nötig, damit mehr Menschen die Möglichkeit haben, anders zu kaufen?",
+"Beobachte: Wer denkt an Lösungen für sich – wer denkt an Veränderungen im System?",
+"Lass beide Haltungen stehen: 'Das System muss sich ändern' und 'Ich kann etwas tun' – beides kann wahr sein.",
+"Was nehmt ihr mit – nicht als Wissen, sondern als Gefühl?"],
+ak:[{t:"Kleiderschrank-Analyse",b:"Freiwillig: Woher kommt, was ich trage? Jede:r schaut selbst nach – ganz ohne Bewertung."},{t:"Tauschbörse",b:"Wer möchte, bringt gut erhaltene Kleidung – kein Zwang, kein Urteil."},{t:"Modeunternehmen anfragen",b:"Wer den Mut hat, schreibt einer Kette eine Frage zu ihrer Lieferkette."},{t:"30 Tage keine neue Kleidung",b:"Wer neugierig ist, kauft 30 Tage nichts und hält fest, was dabei entsteht."}],
+re:["Was würde Farida sagen, wenn sie meinen Kleiderschrank sehen würde?","Wann kaufe ich Kleidung aus echtem Bedarf – wann aus einem anderen Gefühl?","Was könnte ich konkret tun – und was hält mich davon ab?","Was müsste sich im System ändern, damit faire Kleidung für alle erschwinglich wird?"]},
+
+{id:10,ti:"Fleisch essen oder lassen?",
+fa:["Biologie","Ethik","Religion / Werte und Normen","Hauswirtschaft / Ernährung","Sozialwissenschaften","Philosophie","Chemie","Geographie / Erdkunde","Sachunterricht / HSU"],
+kl:["5-6","7-8","9-10"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Für ein Kilo Rindfleisch braucht man bis zu 15.000 Liter Wasser. Gleichzeitig ist für viele Menschen Fleisch Tradition, Kultur und Zusammengehörigkeit – und für manche die einzige erschwingliche Proteinquelle.",
+eq:"Wenn Essen mehr als Nahrung ist – was darf es dann kosten?",
+di:["Ökologie","Soziales","Kultur"],
+ig:["Being: eigene Werte & Traditionen reflektieren","Relating: kulturelle Vielfalt respektieren","Thinking: Zusammenhänge erkennen"],
+we:["Tierwürde","Kulturelle Identität","Umweltverantwortung","Genuss"],
+im:["Keine eigene Meinung voranstellen – beobachte, welche Werte im Raum auftauchen.",
+"Lass kulturelle und religiöse Perspektiven aktiv Raum einnehmen – ohne eine als 'richtiger' zu markieren.",
+"Wenn die Diskussion lebhaft wird: Was macht das Thema für manche Menschen besonders persönlich?",
+"Denke an Menschen, für die bestimmte Lebensmittel nicht wählbar sind. Was bräuchten sie, um trotzdem nachhaltig handeln zu können?",
+"Lade zur Stille ein: Was denke ich – was möchte ich teilen, was lieber für mich behalten?"],
+ak:[{t:"Food-Diary – wer möchte",b:"Freiwillig: Was esse ich diese Woche, woher kommt es – keine Bewertung durch andere."},{t:"Veggie-Tag ausprobieren",b:"Wer möchte, probiert einen Tag aus und erzählt danach davon – kein Muss."},{t:"Lieblingsessen vorstellen",b:"Ein persönliches Essen mit Geschichte – Fleisch oder nicht, beides gleich wertvoll."},{t:"Brief an die Schulkantine",b:"Wer überzeugt ist, kann einen Vorschlag machen – frei und selbst gewählt."}],
+re:["Was bedeutet Essen für mich außer Sättigung?","Was müsste sich ändern, damit nachhaltige Ernährung für alle möglich wird?","Könnte ich mein Essen verändern, ohne meine Identität aufzugeben?","Was würde ich an meiner Ernährung verteidigen – und warum?"]},
+
+{id:11,ti:"Fliegen – Freiheit oder Frevel?",
+fa:["Geographie / Erdkunde","Physik","Ethik","Sozialwissenschaften","Chemie","Philosophie","Deutsch","Wirtschaft / Politik (WiPo)"],
+kl:["9-10","11-13"],ni:["Mittleres Niveau","Hohes Niveau"],
+sc:"Ein Flug Frankfurt–New York verursacht ca. 3 Tonnen CO₂ pro Person – so viel wie ein Jahr Heizen. Reisen ist aber auch Bildung, Freiheit, Familienverbindung. Und für viele Tourismus-Regionen weltweit ist Fliegen schlicht Existenz.",
+eq:"Gehört Reisen zu einem guten Leben – egal was es kostet?",
+di:["Ökologie","Ökonomie","Soziales"],
+ig:["Being: Lebensstil & Werte","Thinking: globale Zusammenhänge","Acting: individuell vs. kollektiv"],
+we:["Freiheit","Klimaverantwortung","Bildungsgerechtigkeit","Wirtschaftliche Solidarität"],
+im:["Keine eigene Meinung einbringen – beobachte, welche Werte sichtbar werden.",
+"Denke an Menschen, für die kein Fliegen kein Einkommen bedeutet. Was braucht ein gerechtes System?",
+"Lass emotionale Argumente stehen – nicht sofort auf Fakten umlenken.",
+"Was ginge verloren, wenn weniger geflogen würde – und was gewänne die Welt?",
+"Beobachte: Wer denkt zuerst an andere – wer zuerst an sich?"],
+ak:[{t:"CO₂-Rechner ausprobieren",b:"Eigene oder fiktive Reisen eingeben – nur für sich, keine Auswertung durch andere."},{t:"Traumurlaub ohne Flug planen",b:"Schüler:innen planen selbst – und entscheiden, ob das für sie vorstellbar wäre."},{t:"Lokale Schätze entdecken",b:"Was gibt es in der Region, das man noch nicht kennt?"},{t:"Brief an eine Fluggesellschaft",b:"Wer sich positioniert, schreibt – kein Zwang, aber die Möglichkeit."}],
+re:["Was müsste passieren, damit ich auf einen geplanten Flug verzichte?","Wer trägt die Konsequenzen meines Reisens – und sehe ich sie?","Ist Einschränken immer Verzicht – oder manchmal auch Freiheit?","Was bedeutet mir Freiheit – und zu welchem Preis?"]},
+
+{id:12,ti:"Der Ball, den ich trete",
+fa:["Sport / Bewegung","Wirtschaft / Politik (WiPo)","Geographie / Erdkunde","Ethik","Sozialwissenschaften"],
+kl:["7-8","9-10","11-13"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Fußbälle großer Marken werden oft in Pakistan unter fragwürdigen Bedingungen genäht – manchmal von Kindern. Der Markenball kostet 25 €, ein vergleichbarer ohne Logo 8 €.",
+eq:"Wenn ich das Logo trage – was sage ich damit aus?",
+di:["Soziales","Ökonomie","Politik"],
+ig:["Relating: globale Empathie","Being: Identität & Konsum","Acting: bewusste Kaufentscheidungen"],
+we:["Kinderrechte","Fairness","Identität","Solidarität"],
+im:["Zeig zwei Bälle – einen Markenball, einen ohne Logo. Frag: Was siehst du zuerst?",
+"Lade ein ohne zu werten: Was bedeutet eine Marke – für das Produkt, für das Gefühl, für andere?",
+"Denke an das Kind, das diesen Ball genäht hat – was würde es von uns erwarten?",
+"Beobachte: Wer sucht Lösungen im eigenen Handeln – wer stellt die Systemfrage?",
+"Schweig nach der schweren Frage – lass den Raum wirken."],
+ak:[{t:"Marke unter der Lupe",b:"Schüler:innen recherchieren zu einer Sportmarke ihrer Wahl: Siegel, Herkunft, Berichte."},{t:"Fair-trade-Alternativen finden",b:"Gibt es faire Sportartikel? Schüler:innen finden es selbst heraus."},{t:"An Verein oder Schule schreiben",b:"Wer möchte, fragt: Wo kommen eure Sportmaterialien her?"},{t:"Turnier mit fairem Ball",b:"Die Klasse spielt bewusst mit nachweislich fair produziertem Material."}],
+re:["Was kaufe ich, wenn ich eine Sportmarke kaufe – das Produkt oder das Gefühl?","Wie viel Wissen über meine Produkte will ich haben?","Was könnte ich als Sportler:in konkret tun?","Wann ist Konsum ein Statement?"]},
+
+{id:13,ti:"Wem gehört Geschichte? Koloniale Objekte im Museum",
+fa:["Geschichte","Kunst / Bildende Kunst","Ethik","Sozialwissenschaften","Philosophie","Religion / Werte und Normen","Deutsch","Englisch / Fremdsprachen"],
+kl:["9-10","11-13"],ni:["Mittleres Niveau","Hohes Niveau"],
+sc:"In einem deutschen Museum steht eine heilige Maske aus Nigeria. Sie wurde 1896 entwendet. Nigeria fordert sie zurück. Das Museum: 'Wir können sie besser schützen.' Eine Aktivistin: 'Das ist unsere Seele.'",
+eq:"Wem gehört Geschichte?",
+di:["Kultur","Politik","Soziales"],
+ig:["Relating: dekoloniales Denken","Being: Haltung zu Macht & Geschichte","Thinking: multiperspektivisch denken"],
+we:["Kulturelle Würde","Gerechtigkeit","Erinnerung","Wiedergutmachung"],
+im:["Beide Positionen gleichwertig stehen lassen – keine bevorzugen.",
+"Denke an Menschen, deren Kulturgüter sich in fremden Museen befinden – was bedeutet das für ihre Identität?",
+"Beobachte: Wer argumentiert – wer fühlt? Beides hat seinen Platz.",
+"Halt inne bei emotionaler Schwere – nicht schnell weiter.",
+"Was wäre gerecht – auch wenn es unbequem ist?"],
+ak:[{t:"Museumsobjekt erforschen",b:"Jede:r wählt ein Objekt und fragt: Woher kommt es wirklich?"},{t:"Brief schreiben",b:"Wer sich positioniert, kann an das Museum oder die Herkunftsgesellschaft schreiben."},{t:"Eigene Ausstellung kuratieren",b:"Die Klasse entscheidet, welche Objekte in eine fiktive Ausstellung gehören – und warum."},{t:"Gespräch suchen",b:"Gibt es in der Region Menschen mit Bezug zu Kolonialgeschichte? Schüler:innen können selbst den Kontakt suchen."}],
+re:["Welche Geschichte steckt in Dingen, die ich für selbstverständlich halte?","Wann ist Besitzen Unrecht – auch wenn legal erworben?","Was bedeutet Wiedergutmachung für mich?","Kann Geschichte gerecht werden – oder nur ehrlicher?"]},
+
+{id:14,ti:"Plastik im Ozean – wessen Problem?",
+fa:["Chemie","Biologie","Geographie / Erdkunde","Physik","Sozialwissenschaften","Ethik","Hauswirtschaft / Ernährung"],
+kl:["7-8","9-10","11-13"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"80% des Ozeanplastiks kommt aus 10 Flüssen – meist in Asien und Afrika. Das Plastik wurde oft in Europa produziert und konsumiert. Wer trägt Verantwortung – die, die wegwerfen, oder die, die produzieren?",
+eq:"Wenn Müll keine Grenzen kennt – gilt das auch für Verantwortung?",
+di:["Ökologie","Politik","Soziales"],
+ig:["Thinking: globale Systemzusammenhänge","Relating: globale Gerechtigkeit","Acting: lokale Konsequenzen"],
+we:["Umweltverantwortung","Globale Gerechtigkeit","Eigenverantwortung","Kooperation"],
+im:["Zeig ein Foto des Plastikmülls im Ozean – schweig eine Minute.",
+"Was hat das konkret mit unserem Alltag hier zu tun?",
+"Denke an Menschen in Ländern, die den meisten Plastik ins Meer tragen – oft, weil ihnen Infrastruktur fehlt. Was wäre gerecht?",
+"Beobachte: Wer denkt global – wer denkt lokal?",
+"Was wirst du davon nächste Woche noch denken?"],
+ak:[{t:"Plastiktagebuch",b:"Freiwillig: Was berühre ich täglich aus Plastik – was könnte es ersetzen?"},{t:"Schulaktion planen",b:"Welche Plastikreduzierung ist in der Schule möglich? Einen Schritt gemeinsam umsetzen."},{t:"An einen Hersteller schreiben",b:"Wer möchte, fragt nach Recyclingkonzepten eines konkreten Unternehmens."},{t:"Lokalen Cleanup organisieren",b:"Wer Lust hat, sammelt Müll in der Nachbarschaft – ohne Pflicht, mit Stolz."}],
+re:["Was tue ich täglich, das den Ozeanen schadet – ohne es zu sehen?","Wann höre ich auf zu fragen, wer schuld ist, und fange an zu handeln?","Was wäre mein konkreter erster Schritt?","Was müsste politisch passieren, damit das Problem gelöst werden kann?"]},
+
+{id:15,ti:"Streaming – wer verdient wirklich?",
+fa:["Musik","Wirtschaft / Politik (WiPo)","Informatik / Medienbildung","Sozialwissenschaften","Deutsch","Philosophie"],
+kl:["7-8","9-10","11-13"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Ein Song wird 1 Million Mal gestreamt. Die Künstlerin bekommt ca. 3.000 €. Große Streaming-Plattformen haben Milliarden-Gewinne. Die meisten Musiker:innen können von ihrer Kunst nicht leben.",
+eq:"Wenn ich Musik kostenlos höre – zahle ich wirklich nichts?",
+di:["Ökonomie","Kultur","Soziales"],
+ig:["Being: eigener Konsum & Werte","Thinking: Plattformökonomie verstehen","Acting: bewusste Kulturförderung"],
+we:["Fairness","Kreativität","Wertschätzung","Gerechtigkeit"],
+im:["Spiel 30 Sekunden eines Songs – frag dann: Was hat diese 30 Sekunden gekostet?",
+"Denke an eine Musikerin, die fünf Jahre an einem Album gearbeitet hat und es kaum zu Geld macht. Was bräuchte sie?",
+"Was würdest du an diesem System ändern – wenn du könntest?",
+"Beobachte: Wer ist empört – wer sagt 'So ist das halt'?",
+"Was hört ihr jetzt anders?"],
+ak:[{t:"Lokale Musik unterstützen",b:"Gibt es lokale Bands? Wer möchte, geht zu einem Konzert – bewusst."},{t:"Alternative Plattformen nutzen",b:"Einen Monat auf Plattformen hören, wo mehr bei Künstler:innen ankommt."},{t:"Klassen-Playlist",b:"Musik kuratieren, die die Gruppe unterstützen will – mit Begründung."},{t:"Offener Brief",b:"Wer sich positioniert, kann sich für faire Musikvergütung äußern."}],
+re:["Was ist mir Musik wert – und handle ich danach?","Wer profitiert von meiner Unterhaltung – und wer zahlt dafür?","Was wäre ein fairer Preis für Musik?","Wie verändert sich mein Zuhören, wenn ich die Zahlen kenne?"]},
+
+{id:16,ti:"Social Media – Bühne oder Spiegel?",
+fa:["Deutsch","Informatik / Medienbildung","Sozialwissenschaften","Kunst / Bildende Kunst","Ethik","Philosophie","Sport / Bewegung"],
+kl:["7-8","9-10","11-13"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Influencer:innen zeigen perfekte Leben – und verdienen damit Millionen. Studien zeigen: Je mehr Jugendliche Instagram nutzen, desto unzufriedener werden viele mit sich. Wer trägt Verantwortung – Plattform, Influencer:innen oder wir selbst?",
+eq:"Wenn jemand weiß, dass Social Media ihm schadet – warum nutzt er es trotzdem?",
+di:["Soziales (psychische Gesundheit)","Kultur","Ökonomie"],
+ig:["Being: Selbstwahrnehmung & Identität","Thinking: Medienkritik","Acting: bewusste Mediennutzung"],
+we:["Selbstwert","Ehrlichkeit","Achtsamkeit","Authentizität"],
+im:["Forschungen zeigen: Viele fühlen sich nach langem Scrollen schlechter. Was könnte der Grund dafür sein?",
+"Denke an Jugendliche, die kaum Zugang zu Geräten haben – und an jene, die stundenlang online sind. Wer hat welche Herausforderung?",
+"Beobachte: Wer spricht über Erfahrungen anderer – wer möchte etwas von sich teilen? Beides ist in Ordnung.",
+"Was würde jemand posten, wenn niemand urteilt?",
+"Was bräuchte jemand, das Social Media nicht geben kann?"],
+ak:[{t:"Screen-Time – wer möchte",b:"Wer ein Gerät hat und möchte: Bildschirmzeit anschauen – selbst entscheiden, was man damit macht."},{t:"7 Tage anders",b:"Eine Gewohnheit für eine Woche verändern – wer Lust hat, teilt die Erfahrung."},{t:"Echter Moment zeigen",b:"Challenge: Was würdest du zeigen, das nicht perfekt ist – wenn du dich sicher fühlst?"},{t:"Medienkompetenz weitergeben",b:"Für jüngere Klassen gestalten, was man selbst gelernt hat."}],
+re:["Was sehe ich auf Social Media – und was sehe ich nicht?","Wann ist man man selbst – und wann ein Bild von sich?","Was bräuchte jemand, um Social Media bewusster zu nutzen?","Was kann Social Media nicht ersetzen?"]},
+
+{id:17,ti:"Gentechnik – Natur verbessern?",
+fa:["Biologie","Chemie","Ethik","Religion / Werte und Normen","Philosophie","Sozialwissenschaften"],
+kl:["9-10","11-13"],ni:["Mittleres Niveau","Hohes Niveau"],
+sc:"CRISPR erlaubt, Gene zu verändern – auch beim Menschen. In China wurden genmodifizierte Babys geboren, resistent gegen HIV. Bioethiker:innen warnen vor 'Designer-Babies'. Landwirte wollen CRISPR gegen Ernteausfälle nutzen.",
+eq:"Wenn wir können – dürfen wir auch?",
+di:["Ökologie","Soziales","Ökonomie"],
+ig:["Thinking: ethisches Urteilen","Being: Haltung zu Natur & Menschenwürde","Relating: Verantwortung für Zukunft"],
+we:["Menschenwürde","Verantwortung","Ernährungssicherheit","Naturbewahrung"],
+im:["Zwei Fälle nebeneinander: krankes Kind / klimaresistente Pflanze – gleiches Werkzeug, unterschiedliche Reaktionen?",
+"Was ist Natur – und wer hat das Recht, das zu definieren?",
+"Lass Komplexität stehen – kein schnelles Urteil einfordern.",
+"Beobachte: Wer denkt in Risiken – wer in Chancen?",
+"Was würde dich dazu bringen, deine Meinung zu verändern?"],
+ak:[{t:"Experteninterview",b:"Schüler:innen kontaktieren eine Biologin oder Ethikerin – mit eigenen Fragen."},{t:"Position formulieren",b:"Brief an die Politik: Unter welchen Bedingungen sollte Gentechnik erlaubt sein?"},{t:"Bürgerdialog besuchen",b:"Gibt es lokale Debatten zu Biotechnologie? Wer möchte, nimmt teil."},{t:"Ethik-Kompass entwickeln",b:"Die Klasse formuliert Leitlinien: Wann ist wissenschaftlicher Fortschritt vertretbar?"}],
+re:["Was würde ich an mir selbst verändern – wenn ich es könnte?","Wer sollte entscheiden, ob Gentechnik eingesetzt wird?","Wo liegt die Grenze zwischen Heilung und Optimierung?","Was schulden wir zukünftigen Generationen?"]},
+
+{id:18,ti:"Wasser – das blaue Gold",
+fa:["Chemie","Geographie / Erdkunde","Physik","Biologie","Sozialwissenschaften","Ethik","Hauswirtschaft / Ernährung","Sachunterricht / HSU"],
+kl:["7-8","9-10","11-13"],ni:["Grundniveau","Mittleres Niveau","Hohes Niveau"],
+sc:"Während Flint (USA) vergiftetes Leitungswasser hatte, pumpte Nestlé aus derselben Region sauberes Wasser ab und verkaufte es in Flaschen. Weltweit haben 2 Milliarden Menschen keinen Zugang zu sauberem Wasser. In Deutschland fließt es aus dem Hahn.",
+eq:"Kann Wasser ein Menschenrecht sein – wenn Konzerne es besitzen?",
+di:["Ökologie","Soziales","Politik"],
+ig:["Thinking: Recht & Wirtschaft kritisch","Being: eigene Wassernutzung","Relating: globale Wasserkrise"],
+we:["Menschenrecht auf Wasser","Gerechtigkeit","Verantwortung","Demokratie"],
+im:["Stell einen Becher Leitungswasser auf jeden Tisch – und schweig kurz.",
+"Was müsste sich ändern, damit alle Menschen Zugang zu sauberem Wasser haben?",
+"Denke an die Menschen in Flint, die jahrelang vergiftetes Wasser trinken mussten – was hätten sie gebraucht?",
+"Beobachte: Wer denkt politisch – wer persönlich?",
+"Ist Wasser sparen Pflicht – oder Fürsorge?"],
+ak:[{t:"Wasser-Fußabdruck berechnen",b:"Eigenen Wasserverbrauch berechnen – und selbst entscheiden, was man damit macht."},{t:"Leitungswasser-Monat",b:"Die Klasse trinkt einen Monat Leitungswasser – wer möchte, mit Protokoll."},{t:"Petition",b:"Aktuelle politische Forderungen für Wasserrechte? Wer möchte, handelt."},{t:"Wasserherkunft erkunden",b:"Woher kommt unser lokales Trinkwasser? Schüler:innen finden es selbst heraus."}],
+re:["Was würde sich verändern, wenn ich einen Tag kein fließendes Wasser hätte?","Was schulden wir Menschen ohne Zugang zu sauberem Wasser?","Was könnte ich heute anders machen?","Gehört Wasser allen – und was bedeutet das für unser Wirtschaftssystem?"]},
+
+{id:19,ti:"Digitale Überwachung – für unsere Sicherheit?",
+fa:["Informatik / Medienbildung","Geschichte","Sozialwissenschaften","Ethik","Philosophie","Deutsch","Wirtschaft / Politik (WiPo)"],
+kl:["9-10","11-13"],ni:["Mittleres Niveau","Hohes Niveau"],
+sc:"In Singapur werden Bürger:innen durch Kameras und Apps überwacht – die Kriminalitätsrate ist sehr niedrig. In Europa diskutiert man Gesichtserkennung an Bahnhöfen. Mehr Sicherheit durch weniger Privatsphäre?",
+eq:"Wie viel Freiheit gibt eine Gesellschaft auf für Sicherheit – und für wessen Sicherheit?",
+di:["Politik","Soziales","Kultur"],
+ig:["Being: Werte zu Freiheit & Schutz","Thinking: Demokratie & Technik","Acting: politische Teilhabe"],
+we:["Freiheit","Sicherheit","Datenschutz","Demokratie","Vertrauen"],
+im:["Denke an Menschen, die von Überwachung profitieren – und an jene, die sie fürchten. Wer sind diese Menschen?",
+"Lass Schüler:innen beide Seiten vertreten – auch die, die sie nicht persönlich teilen.",
+"Beobachte: Wer fühlt sich sicher durch Kontrolle – wer fühlt sich bedroht? Was könnte den Unterschied erklären?",
+"Wem vertraut man in einer Gesellschaft – und wie entsteht dieses Vertrauen?",
+"Was macht diese Frage nicht nur theoretisch, sondern lebenswirklich?"],
+ak:[{t:"Eigene Datenspur sichtbar machen",b:"App-Einstellungen anschauen: Welche Daten gebe ich täglich frei – freiwillig?"},{t:"Eine Einstellung ändern",b:"Wer möchte, ändert heute eine Datenschutzeinstellung – bewusst und selbst gewählt."},{t:"Politisch Stellung nehmen",b:"Gibt es aktuelle Überwachungsgesetze? Wer informiert sich und äußert sich?"},{t:"Schuldiskussion",b:"Sollte unsere Schule Kameras haben? Die Klasse entscheidet, ob sie das weitergibt."}],
+re:["Was würde sich verändern, wenn jede Handlung beobachtet würde?","Was schützt eine Gesellschaft mehr – Regeln oder Vertrauen?","Wann ist Transparenz gut – und wann macht sie Angst?","Was ist Demokratie wert, wenn niemand widerspricht?"]},
+
+{id:20,ti:"Elektroauto – grüne Lösung oder grüne Lüge?",
+fa:["Physik","Chemie","Wirtschaft / Politik (WiPo)","Geographie / Erdkunde","Sozialwissenschaften","Ethik","Informatik / Medienbildung"],
+kl:["9-10","11-13"],ni:["Mittleres Niveau","Hohes Niveau"],
+sc:"Für eine E-Auto-Batterie braucht man Kobalt – oft aus dem Kongo, wo Kinder in Minen arbeiten. Lithium wird in wasserarmen Regionen Südamerikas gefördert. Das Elektroauto gilt als Klimalösung. Aber für wen?",
+eq:"Kann eine Lösung gerecht sein, wenn sie auf Unrecht aufbaut?",
+di:["Ökologie","Soziales","Ökonomie"],
+ig:["Thinking: systemisches Denken","Being: eigene Konsumhaltung","Relating: globale Perspektiven"],
+we:["Klimagerechtigkeit","Menschenrechte","Ehrlichkeit","Globale Verantwortung"],
+im:["Zeig die Lieferkette als Skizze – lass Schüler:innen selbst Fragen formulieren.",
+"Denke an die Kinder in den Kobalt-Minen und an die Menschen in trockenen Lithium-Regionen – was schulden wir ihnen?",
+"Lass Widersprüche stehen: Gut fürs Klima, schlecht für Menschen – beides stimmt.",
+"Beobachte: Wer sucht sofort eine Lösung – wer hält Komplexität aus?",
+"Was brauchst du, um mit Widersprüchen gut umzugehen?"],
+ak:[{t:"Lieferkette verfolgen",b:"Schüler:innen wählen ein Tech-Produkt und verfolgen dessen Herkunft so weit wie möglich."},{t:"Mobilitätsalternativen kartieren",b:"Was gibt es in unserer Region – und was fehlt noch?"},{t:"Hersteller befragen",b:"Wer möchte, schreibt eine kritische Frage zu einer Lieferkette."},{t:"Stadtrat ansprechen",b:"Gibt es lokale Mobilitätsthemen? Schüler:innen erkunden und können aktiv werden."}],
+re:["Wann ist eine Lösung gut genug – auch wenn sie nicht perfekt ist?","Wie viel Widerspruch kann ich aushalten, ohne zu resignieren?","Was wäre mein Beitrag zu fairer Mobilität?","Wer entscheidet, was 'grün' bedeutet – und wer darf nicht mitreden?"]}
+];
+
+function onFC() {
+  document.getElementById('cw').style.display =
+    document.getElementById('fsel').value === 'custom' ? 'block' : 'none';
+}
+function setN(i) {
+  sN = i;
+  [0,1,2].forEach(j => document.getElementById('n'+j).classList.toggle('on', j===i));
+}
+function dCls(d) {
+  d = d.toLowerCase();
+  if (d.includes('ökon') || d.includes('wirt') || d.includes('digital')) return 'böko';
+  if (d.includes('öko') || d.includes('umwelt') || d.includes('natur') || d.includes('ges')) return 'bök';
+  if (d.includes('soz') || d.includes('bildung') || d.includes('psych') || d.includes('gesund') || d.includes('inkl')) return 'bso';
+  if (d.includes('pol')) return 'bpo';
+  if (d.includes('kul') || d.includes('lernen') || d.includes('wissen')) return 'bku';
+  return 'bidg';
+}
+function render(d) {
+  const nav = fil.length > 1
+    ? `<div class="nav"><button class="nbtn" onclick="nxt()">Nächsten Impuls anzeigen ↗</button><span class="ctext">${idx+1} / ${fil.length}</span></div>`
+    : '';
+  return `
+    <div class="card">
+      <div class="dt">${d.ti}</div>
+      <div class="ds">${d.sc}</div>
+      <div class="de">"${d.eq}"</div>
+      <div style="margin-bottom:12px">
+        <div class="sl">Nachhaltigkeitsdimensionen</div>
+        <div class="tag-row">${d.di.map(x=>`<span class="bx ${dCls(x)}">${x}</span>`).join('')}</div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div class="sl">IDG-Dimensionen</div>
+        <div class="tag-row">${d.ig.map(x=>`<span class="bx bidg">${x}</span>`).join('')}</div>
+      </div>
+      <div>
+        <div class="sl">Werte im Fokus</div>
+        <div class="tag-row">${d.we.map(x=>`<span class="bx bw">${x}</span>`).join('')}</div>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <div class="sl">Impulse für Lehrkräfte — Denken · Beobachten · Einfühlen</div>
+    <div class="card">${d.im.map((x,i)=>`<div class="imp-item"><div class="inum">${i+1}</div><div class="itext">${x}</div></div>`).join('')}</div>
+    <div class="sep"></div>
+    <div class="sl">Schüler:innen ins Tun bringen — niederschwellig &amp; eigenverantwortlich</div>
+    <div class="ak-grid">${d.ak.map(a=>`<div class="ak"><div class="at">${a.t}</div><div class="ad">${a.b}</div></div>`).join('')}</div>
+    <div class="sep"></div>
+    <div class="sl">Reflexionsfragen für Schüler:innen</div>
+    <div class="card">${d.re.map(r=>`<div class="rf">${r}</div>`).join('')}</div>
+    ${nav}
+    <div class="nav" style="margin-top:${fil.length>1?'0':'0.75rem'}">
+      <button class="nbtn" onclick="reset()">← Neue Suche</button>
+    </div>`;
+}
+function nxt() { idx = (idx+1) % fil.length; document.getElementById('res').innerHTML = render(fil[idx]); window.scrollTo(0,0); }
+function reset() { document.getElementById('res').style.display='none'; document.getElementById('er').style.display='none'; window.scrollTo(0,0); }
+function gen() {
+  const fv = document.getElementById('fsel').value;
+  const kv = document.getElementById('ksel').value;
+  if (!fv || !kv || sN < 0) { document.getElementById('er').style.display='block'; return; }
+  document.getElementById('er').style.display = 'none';
+  const isC = fv === 'custom', nv = NL[sN];
+  const mF = d => isC || d.fa.includes(fv);
+  const mK = d => d.kl.includes(kv);
+  const mN = d => d.ni.includes(nv);
+  let r = D.filter(d => mF(d) && mK(d) && mN(d));
+  if (!r.length) r = D.filter(d => mF(d) && mK(d));
+  if (!r.length) r = D.filter(d => mF(d));
+  if (!r.length) r = [...D];
+  fil = r.sort(() => Math.random() - .5); idx = 0;
+  const rb = document.getElementById('res');
+  rb.style.display = 'block';
+  rb.innerHTML = (isC ? `<div class="adapt-note">Alle Dilemmata werden angezeigt – sie lassen sich auf "${document.getElementById('cfach').value||'dein Fach'}" übertragen.</div>` : '');
+  rb.innerHTML += render(fil[0]);
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
